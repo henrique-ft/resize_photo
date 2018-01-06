@@ -27,7 +27,7 @@ class Image
   #--------------------------------#
   # Get all images url from an api #
   #--------------------------------#
-  def self.get_from_api url
+  def self.get_from_api
     http_request = HTTParty.get('http://54.152.221.29/images.json')
     
     return {} if http_request.body.nil? or not http_request.body['images'].present?
