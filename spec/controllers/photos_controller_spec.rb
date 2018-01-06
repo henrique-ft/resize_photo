@@ -25,7 +25,12 @@ RSpec.describe PhotosController, type: :controller do
   end
   
   describe "GET #index" do
-    
+
+    it "returns http success" do
+      get :index
+      expect(response).to have_http_status(:success)
+    end
+
     it "shows a empty list when dont have image values" do
       clean_database
       get :index

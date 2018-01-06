@@ -10,9 +10,9 @@ class Image
   #------------------------------------------------------------------------#
   has_mongoid_attached_file :attachment, styles: { small: '320x240>', medium: "384x288>", large: "640x480>" }, url: "/images/:style_:basename.:extension"
   
-  #-----------------------------------#
+  #---------------------------------------#
   # Validates the content of a attachment #
-  #-----------------------------------#
+  #---------------------------------------#
   validates_attachment :attachment, content_type: { content_type: ["image/jpg", "image/jpeg", "image/png", "image/gif"] }
     
   #------------------------------------------------------#
@@ -27,7 +27,7 @@ class Image
   #--------------------------------#
   # Get all images url from an api #
   #--------------------------------#
-  def self.get_from_api(api_url)
+  def self.get_from_api(api_url)      
     http_request = HTTParty.get(api_url)
     return {} if http_request.body.nil? 
     get_images_urls_from_hash(JSON.parse(http_request.body))

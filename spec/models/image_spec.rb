@@ -16,4 +16,14 @@ RSpec.describe Image, type: :model do
      expect(Image.get_images_urls_from_hash({images: []})).to eq({}) 
   end
 
+  it "gets image url by hash" do
+     hash_test = {"images" => [{"url"=> "test"},{"url"=> "teste2"}]}
+     urls = Image.get_images_urls_from_hash(hash_test) 
+     expect(urls).to eq(["test", "teste2"])
+  end
+    
+  it "creates a image by a valid image url" do
+    image = Image.create_by_url("http://54.152.221.29/images/b737_5.jpg")
+    expect(image).to be_truthy 
+  end
 end
