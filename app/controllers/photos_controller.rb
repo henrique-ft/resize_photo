@@ -11,7 +11,7 @@ class PhotosController < ApplicationController
   # Get the images from api, reset our database with the new images and show in json format #
   #-----------------------------------------------------------------------------------------#
   def resize_photos
-    Image.reset_images_from_api
+    Image.reset_all_getting_from_api('http://54.152.221.29/images.json')
     render_images_json
   end
   

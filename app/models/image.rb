@@ -18,29 +18,35 @@ class Image
   #------------------------------------------------------#
   # Given an url, this function saves a image in mongoDB #
   #------------------------------------------------------#
-  def self.create_by_url(url)
+  def self.create_by_url(api_url)
     image = new
-    image.attachment = URI.parse(url)
+    image.attachment = URI.parse(api_url)
     image.save
   end
 
   #--------------------------------#
   # Get all images url from an api #
   #--------------------------------#
-  def self.get_from_api
-    http_request = HTTParty.get('http://54.152.221.29/images.json')
-    
-    return {} if http_request.body.nil? or not http_request.body['images'].present?
-    json = JSON.parse(http_request.body)
-    json['images'].map { |image| image['url'] }
+  def self.get_from_api(api_url)
+    http_request = HTTParty.get(api_url)
+    return {} if http_request.body.nil? 
+    get_images_urls_from_hash(JSON.parse(http_request.body))
+  end
+
+  #-----------------------------#
+  # Get images url from an hash #
+  #-----------------------------#  
+  def self.get_images_urls_from_hash(hash)
+    return {} if not hash['images'].present?
+    hash['images'].map { |image| image['url'] }    
   end
 
   #------------------------------------------------------------------------------#
   # Resets mongoDB images with theirs respectives sizes finding in the given api #
   #------------------------------------------------------------------------------#
-  def self.reset_images_from_api
+  def self.reset_all_getting_from_api(api_url)
     Image.destroy_all
-    Image.get_from_api.map { |url| Image.create_by_url url }
+    Image.get_from_api(api_url).map { |url| Image.create_by_url url }
   end
 
 end
